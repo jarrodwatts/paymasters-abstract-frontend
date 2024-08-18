@@ -46,8 +46,11 @@ export default function Home() {
               Abstract Paymaster Demo
             </h1>
 
-            <p className="text-md md:text-lg text-center md:text-start mb-1 px-8 md:px-2 font-sans">
-              Sign in or connect a wallet to mint an NFT. <br />No gas fees required!
+            <p className="text-center max-w-[480px] text-md md:text-lg md:text-start  px-2 mt-2">
+              Mint an NFT for free <i>(no gas fees)</i> with Abstract&rsquo;s native account abstraction & paymaster support.
+
+              {/* Video embed */}
+
             </p>
           </div>
 
@@ -65,7 +68,7 @@ export default function Home() {
               />
 
               :
-              <div className="flex flex-col items-center justify-center gap-4 mb-8">
+              <div className="flex flex-col items-center justify-center mb-8">
                 <div className="rounded-xl p-1">
                   <Image src={`/chad.png`} width={300} height={300} alt="chad" className="rounded-xl" />
                 </div>
@@ -80,6 +83,9 @@ export default function Home() {
                   }}
                   onTransactionConfirmed={(tx) => { console.log(tx) }}
                   onError={(error) => { console.error(error) }}
+                  style={{
+                    width: "100%",
+                  }}
                 >
                   Mint NFT
                 </ClaimButton>
