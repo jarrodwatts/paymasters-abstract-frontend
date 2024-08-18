@@ -42,11 +42,11 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center gap-4 md:gap-8 mb-8 md:flex-row md:items-start md:w-[1020px]">
 
           <div className="gap-2 flex flex-col md:justify-start md:items-start md:h-full md:py-3">
-            <h1 className="text-3xl md:text-4xl font-bold text-center md:text-start px-2">
+            <h1 className="text-3xl md:text-4xl font-bold text-center md:text-start px-2 font-heading">
               Abstract Paymaster Demo
             </h1>
 
-            <p className="text-md md:text-lg text-center md:text-start mb-1 px-8 md:px-2">
+            <p className="text-md md:text-lg text-center md:text-start mb-1 px-8 md:px-2 font-sans">
               Sign in or connect a wallet to mint an NFT. <br />No gas fees required!
             </p>
           </div>
