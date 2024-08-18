@@ -1,16 +1,31 @@
 'use client';
 
-import { ClaimButton, ConnectEmbed, useActiveAccount } from "thirdweb/react";
+import { ClaimButton, ConnectButton, ConnectEmbed, darkTheme, useActiveAccount } from "thirdweb/react";
 import { abstractTestnet, } from "thirdweb/chains";
 import { createWallet, walletConnect, inAppWallet } from "thirdweb/wallets";
 import { client } from "./client";
 import Image from "next/image";
 
-const paymasterContractAddress = "0x57ba66d5d6A1f347d69bbDb435684d18A6BE33f0";
-
+const chain = abstractTestnet;
 const nftContractAddress = "0x4516DD9191c3f8fd017fF2b017E224Fb07929C6F"
 const tokenIdToMint = 0n;
 const quantityToMint = 1n;
+
+const walletsToSupport = [
+  // Social login and passkeys
+  inAppWallet({
+    auth: {
+      options: [
+        "google",
+        "passkey",
+      ],
+    },
+  }),
+  // Web3 wallets
+  createWallet("io.metamask"),
+  createWallet("com.coinbase.wallet"),
+  walletConnect(),
+]
 
 export default function Home() {
   const activeAccount = useActiveAccount();
@@ -24,60 +39,45 @@ export default function Home() {
         `,
       }}>
       <div className="py-20">
-        <div className="flex flex-col items-center justify-center gap-4 mb-20">
+        <div className="flex flex-col items-center justify-center gap-4 md:gap-8 mb-8 md:flex-row md:items-start md:w-[1020px]">
 
-          <h1 className="text-3xl md:text-5xl font-bold text-center px-2">
-            Abstract Paymaster Demo
-          </h1>
+          <div className="gap-2 flex flex-col md:justify-start md:items-start md:h-full md:py-3">
+            <h1 className="text-3xl md:text-4xl font-bold text-center md:text-start px-2">
+              Abstract Paymaster Demo
+            </h1>
 
-          <p className="text-md md:text-lg text-center mb-1 px-8">
-            Sign in or connect a wallet to mint an NFT. <br />No gas fees required!
-          </p>
+            <p className="text-md md:text-lg text-center md:text-start mb-1 px-8 md:px-2">
+              Sign in or connect a wallet to mint an NFT. <br />No gas fees required!
+            </p>
+          </div>
 
           {
             !activeAccount ?
               <ConnectEmbed
-                chain={abstractTestnet}
+                chain={chain}
                 client={client}
                 accountAbstraction={{
-                  chain: abstractTestnet,
+                  chain,
                   sponsorGas: true,
                 }}
-                wallets={[
-                  // Social login and passkeys
-                  inAppWallet({
-                    auth: {
-                      options: [
-                        "google",
-                        "passkey",
-                      ],
-                    },
-                  }),
-                  // Web3 wallets
-                  createWallet("io.metamask"),
-                  createWallet("com.coinbase.wallet"),
-                  walletConnect(),
-                ]}
+                wallets={walletsToSupport}
                 showThirdwebBranding={false}
               />
 
               :
-
-              <div className="flex flex-col items-center justify-center gap-4 mb-20 w-full">
+              <div className="flex flex-col items-center justify-center gap-4 mb-8">
                 <div className="rounded-xl p-1">
-                  <Image src={`/chad.png`} width={300} height={300} alt="chad" />
+                  <Image src={`/chad.png`} width={300} height={300} alt="chad" className="rounded-xl" />
                 </div>
-
                 <ClaimButton
                   contractAddress={nftContractAddress}
-                  chain={abstractTestnet}
+                  chain={chain}
                   client={client}
                   claimParams={{
                     quantity: quantityToMint,
                     tokenId: tokenIdToMint,
                     type: "ERC1155",
                   }}
-                  style={{ width: '90%' }}
                   onTransactionConfirmed={(tx) => { console.log(tx) }}
                   onError={(error) => { console.error(error) }}
                 >
